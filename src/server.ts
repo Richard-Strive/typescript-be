@@ -4,15 +4,18 @@ import "dotenv/config";
 import listEndPoint from "express-list-endpoints";
 import cors from "cors";
 import mongoose from "mongoose";
-import { countReset } from "console";
-import { runInContext } from "vm";
+import UserRouter from "./routes/user/index";
 
-const server: Application = express();
+const server = express();
 
 server.use(express.json());
 server.use(cors());
 
 const port = process.env.PORT;
+
+server.use("/chanel", UserRouter);
+
+console.log(listEndPoint(server));
 
 mongoose.connect(
   process.env.MONGO_CONNECTION!,

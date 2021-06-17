@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Model } from "mongoose";
 
 interface User {
   name: string;
@@ -12,7 +12,7 @@ interface User {
   favProd: Array<string>;
 }
 
-const UserSchema = new Schema<User>({
+const UserSchema = new Schema<User, UserModel>({
   firstName: {
     type: String,
     required: true,
@@ -42,22 +42,26 @@ const UserSchema = new Schema<User>({
   favProd: { type: Array, required: false },
 });
 
-UserSchema.statics.findByCredentials = async function (
-  email: string,
-  plainPW: string
-): Promise<void> {
-  if (email && plainPW) {
-    const user = await this.findOne({ email });
+interface UserModel extends Model<User> {
+  findByCredentials(email: string, password: string): any;
+}
 
-    if (user) {
-      const isMatch = (await plainPW) == user.password;
+UserSchema.static(
+  "findByCredentials",
+  async function findByCredentials(email: string, plainPW: string) {
+    if (email && plainPW) {
+      const user = await this.findOne({ email });
 
-      if (isMatch) return user;
-      else console.log("Passord incorrect");
-    } else {
-      console.log("No user with this credentials");
+      if (user) {
+        const isMatch = (await plainPW) == user.password;
+
+        if (isMatch) return user;
+        else console.log("Passord incorrect");
+      } else {
+        console.log("No user with this credentials");
+      }
     }
   }
-};
+);
 
-export default model<User>("User", UserSchema);
+export default model<User, UserModel>("User", UserSchema);
