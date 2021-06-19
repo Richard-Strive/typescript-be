@@ -1,10 +1,20 @@
 import express, { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
+
 import { body, validationResult } from "express-validator";
 
 import User from "./schema";
 
 const route = express.Router();
+
+// "firstName": "Sky",
+// "surname":"Bellomare",
+// "title":"Mrs.",
+// "email": "cillals@gmail.com",
+// "phoneNumber": "3516573795",
+// "locationOfRecidence":"Isernia",
+// "cart":"One",
+// "favProd": "two",
+// "password":"123456"
 
 //Registration
 route.post(
@@ -19,9 +29,8 @@ route.post(
     next: NextFunction
   ): Promise<Response | undefined> => {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array });
+      return res.status(400).json({ errors: errors.array() });
     }
     try {
       const newUser = new User({
