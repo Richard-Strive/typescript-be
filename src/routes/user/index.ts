@@ -1,28 +1,50 @@
 import express, { Request, Response, NextFunction } from "express";
 
-import { body, validationResult } from "express-validator";
+import { body, validationResult, check } from "express-validator";
 
 import User from "./schema";
 
 const route = express.Router();
 
-// "firstName": "Sky",
-// "surname":"Bellomare",
-// "title":"Mrs.",
-// "email": "cillals@gmail.com",
-// "phoneNumber": "3516573795",
-// "locationOfRecidence":"Isernia",
-// "cart":"One",
-// "favProd": "two",
-// "password":"123456"
+const valideMid = () => {
+  return [
+    check("firstName", "Please the field shouldn't be empty")
+      .not()
+      .isEmpty()
+      .isAlpha(),
+    check("surname", "Please the field shouldn't be empty")
+      .not()
+      .isEmpty()
+      .isAlpha(),
+    check(
+      "title",
+      "Please the field shouldn't be empty or it should contain letters"
+    )
+      .not()
+      .isEmpty()
+      .isAlpha(),
+    check("email", "Please choose a valid email").isEmail(),
+    check(
+      "phoneNumber",
+      "Please choose a IT format phone number"
+    ).isMobilePhone(["it-IT"]),
+    check("locationOfRecidence", "This field shouldn't be Empty")
+      .not()
+      .isEmpty()
+      .isLength({
+        min: 5,
+      }),
+    check(
+      "password",
+      "Please make sure to add special chars and numbers to your password"
+    ).isStrongPassword(),
+  ];
+};
 
 //Registration
 route.post(
   "/register",
-  body("email").isEmail().withMessage("Please choose a valid email"),
-  body("password")
-    .isLength({ min: 5 })
-    .withMessage("Please choose a longer password"),
+  valideMid(),
   async (
     req: Request,
     res: Response,
@@ -33,9 +55,26 @@ route.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
+      const {
+        firstName,
+        email,
+        password,
+        phoneNumber,
+        title,
+        surname,
+        locationOfRecidence,
+      } = req.body;
+
       const newUser = new User({
-        ...req.body,
+        firstName,
+        email,
+        password,
+        phoneNumber,
+        title,
+        surname,
+        locationOfRecidence,
       });
+
       await newUser.save();
       const { _id } = newUser;
       next();
