@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 
 import { body, validationResult } from "express-validator";
 
-import valideMid from "../tools";
+import valideMid from "./user-validation";
 
 import User from "./schema";
 
