@@ -12,35 +12,40 @@ interface User {
   favProd: Array<string>;
 }
 
-const UserSchema = new Schema<User, UserModel>({
-  firstName: {
-    type: String,
-    required: true,
+const UserSchema = new Schema<User, UserModel>(
+  {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    surname: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    email: { type: String, required: true },
+    phoneNumber: {
+      type: Number,
+      required: true,
+    },
+    locationOfRecidence: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    cart: { type: Array, required: false },
+    favProd: { type: Array, required: false },
   },
-  surname: {
-    type: String,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  email: { type: String, required: true },
-  phoneNumber: {
-    type: Number,
-    required: true,
-  },
-  locationOfRecidence: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  cart: { type: Array, required: false },
-  favProd: { type: Array, required: false },
-});
+  {
+    timestamps: true,
+  }
+);
 
 interface UserModel extends Model<User> {
   findByCredentials(email: string, password: string): any;

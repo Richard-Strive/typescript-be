@@ -35,18 +35,16 @@ route.post(
       //
 
       const newUser = new User(newObject);
-      /// Pick-loadash
+
       console.log("This is the cool thing that i've learned");
 
       await newUser.save();
 
-      // const newObject2 = _.pick(
-      //   newUser,
-      //   Object.keys(new UserRegistrationRes())
-      // );
+      const newObject2 = _.pick(
+        newUser,
+        Object.keys(new UserRegistrationRes())
+      );
 
-      // const { _id } = newUser;
-      //Add new class res {name, email and location}
       // const newObject2: UserRegistrationRes = newUser;
 
       next();
