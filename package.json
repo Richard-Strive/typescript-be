@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Richard-Strive/typescript-be#readme",
   "dependencies": {
     "@types/cors": "^2.8.10",
+    "@types/lodash": "^4.14.170",
     "@types/mongoose": "^5.11.97",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",

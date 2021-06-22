@@ -1,10 +1,14 @@
 import express, { Request, Response, NextFunction } from "express";
 
-import { body, validationResult } from "express-validator";
+import _ from "lodash";
+
+import { validationResult } from "express-validator";
 
 import valideMid from "./user-validation";
 
 import User from "./schema";
+
+import { UserRegistrationReq, UserRegistrationRes } from "./user-to";
 
 const route = express.Router();
 
@@ -22,30 +26,31 @@ route.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const {
-        firstName,
-        email,
-        password,
-        phoneNumber,
-        title,
-        surname,
-        locationOfRecidence,
-      } = req.body;
+      // const userReq: UserRegistrationReq = req.body;
 
-      const newUser = new User({
-        firstName,
-        email,
-        password,
-        phoneNumber,
-        title,
-        surname,
-        locationOfRecidence,
-      });
+      const newObject = _.pick(
+        req.body,
+        Object.keys(new UserRegistrationReq())
+      );
+      //
+
+      const newUser = new User(newObject);
+      /// Pick-loadash
+      console.log("This is the cool thing that i've learned");
 
       await newUser.save();
-      const { _id } = newUser;
+
+      // const newObject2 = _.pick(
+      //   newUser,
+      //   Object.keys(new UserRegistrationRes())
+      // );
+
+      // const { _id } = newUser;
+      //Add new class res {name, email and location}
+      // const newObject2: UserRegistrationRes = newUser;
+
       next();
-      res.status(201).send(_id);
+      res.status(201).send(newObject2);
     } catch (error) {
       console.log(error);
       next(error);

@@ -2,14 +2,8 @@ import { check } from "express-validator";
 
 const valideMid = () => {
   return [
-    check("firstName", "Please the field shouldn't be empty")
-      .not()
-      .isEmpty()
-      .isAlpha(),
-    check("surname", "Please the field shouldn't be empty")
-      .not()
-      .isEmpty()
-      .isAlpha(),
+    check("firstName", "Please the field shouldn't be empty").not().isEmpty(),
+    check("surname", "Please the field shouldn't be empty").not().isEmpty(),
     check(
       "title",
       "Please the field shouldn't be empty or it should contain letters"
