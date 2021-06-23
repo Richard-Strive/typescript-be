@@ -31,12 +31,17 @@ route.post(
         Object.keys(new UserRegistrationReq())
       );
 
+      //add email valid with mongoose method
+      const isMatchEmail = await User.findOne({ email: req.body.email });
+      if (isMatchEmail) {
+        res
+          .status(500)
+          .send(
+            "Sorry but this email it's already in use. Please choose another one."
+          );
+      }
       const userDoc = new User(userRegistrationReq);
-
-      console.log("This is the cool thing that i've learned");
-
       const savedNewUser = await userDoc.save();
-
       const userRegistrationRes = _.pick(
         savedNewUser,
         Object.keys(new UserRegistrationRes())
@@ -47,13 +52,6 @@ route.post(
 
       res.status(201).send(userRegistrationRes);
     } catch (error) {
-      if (error.code === 11000 && error.keyValue.email) {
-        res
-          .status(400)
-          .send(
-            "Sorry it seems that this email it's already in use. Please use another one."
-          );
-      }
       console.log(error);
       next(error);
     }
