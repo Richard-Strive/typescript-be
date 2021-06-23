@@ -42,12 +42,19 @@ route.post(
         Object.keys(new UserRegistrationRes())
       );
 
+      console.log(userRegistrationReq);
       next();
 
       res.status(201).send(userRegistrationRes);
     } catch (error) {
+      if (error.code === 11000 && error.keyValue.email) {
+        res
+          .status(400)
+          .send(
+            "Sorry it seems that this email it's already in use. Please use another one."
+          );
+      }
       console.log(error);
-      res.status(500).send("Something went wrong");
       next(error);
     }
   }
