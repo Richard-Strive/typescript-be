@@ -31,14 +31,14 @@ route.post(
         Object.keys(new UserRegistrationReq())
       );
 
-      const savedNewUser = new User(userRegistrationReq);
+      const userDoc = new User(userRegistrationReq);
 
       console.log("This is the cool thing that i've learned");
 
-      await savedNewUser.save();
+      await userDoc.save();
 
       const userRegistrationRes = _.pick(
-        savedNewUser,
+        userDoc,
         Object.keys(new UserRegistrationRes())
       );
 
