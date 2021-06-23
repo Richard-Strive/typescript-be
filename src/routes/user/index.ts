@@ -35,7 +35,7 @@ route.post(
 
       console.log("This is the cool thing that i've learned");
 
-      await userDoc.save();
+      const savedNewUser = await userDoc.save();
 
       const userRegistrationRes = _.pick(
         userDoc,
