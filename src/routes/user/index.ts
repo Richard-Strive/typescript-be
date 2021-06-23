@@ -43,9 +43,11 @@ route.post(
       );
 
       next();
+
       res.status(201).send(userRegistrationRes);
     } catch (error) {
       console.log(error);
+      res.status(500).send("Something went wrong");
       next(error);
     }
   }
