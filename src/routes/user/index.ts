@@ -38,7 +38,7 @@ route.post(
       const savedNewUser = await userDoc.save();
 
       const userRegistrationRes = _.pick(
-        userDoc,
+        savedNewUser,
         Object.keys(new UserRegistrationRes())
       );
 
