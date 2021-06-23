@@ -26,13 +26,10 @@ route.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      // const userReq: UserRegistrationReq = req.body;
-
       const newObject = _.pick(
         req.body,
         Object.keys(new UserRegistrationReq())
       );
-      //
 
       const newUser = new User(newObject);
 
@@ -44,8 +41,6 @@ route.post(
         newUser,
         Object.keys(new UserRegistrationRes())
       );
-
-      // const newObject2: UserRegistrationRes = newUser;
 
       next();
       res.status(201).send(newObject2);
