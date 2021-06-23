@@ -38,6 +38,8 @@ const UserSchema = new mongoose_1.Schema({
     },
     cart: { type: Array, required: false },
     favProd: { type: Array, required: false },
+}, {
+    timestamps: true,
 });
 UserSchema.static("findByCredentials", function findByCredentials(email, plainPW) {
     return __awaiter(this, void 0, void 0, function* () {

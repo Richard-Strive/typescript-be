@@ -26,24 +26,24 @@ route.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const newObject = _.pick(
+      const userRegistrationReq = _.pick(
         req.body,
         Object.keys(new UserRegistrationReq())
       );
 
-      const newUser = new User(newObject);
+      const savedNewUser = new User(userRegistrationReq);
 
       console.log("This is the cool thing that i've learned");
 
-      await newUser.save();
+      await savedNewUser.save();
 
-      const newObject2 = _.pick(
-        newUser,
+      const userRegistrationRes = _.pick(
+        savedNewUser,
         Object.keys(new UserRegistrationRes())
       );
 
       next();
-      res.status(201).send(newObject2);
+      res.status(201).send(userRegistrationRes);
     } catch (error) {
       console.log(error);
       next(error);

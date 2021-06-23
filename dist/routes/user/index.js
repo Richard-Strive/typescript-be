@@ -26,16 +26,13 @@ route.post("/register", user_validation_1.default(), (req, res, next) => __await
         return res.status(400).json({ errors: errors.array() });
     }
     try {
-        // const userReq: UserRegistrationReq = req.body;
-        const newObject = lodash_1.default.pick(req.body, Object.keys(new user_to_1.UserRegistrationReq()));
-        //
-        const newUser = new schema_1.default(newObject);
-        /// Pick-loadash
+        const userRegistrationReq = lodash_1.default.pick(req.body, Object.keys(new user_to_1.UserRegistrationReq()));
+        const savedNewUser = new schema_1.default(userRegistrationReq);
         console.log("This is the cool thing that i've learned");
-        yield newUser.save();
-        const { _id } = newUser;
+        yield savedNewUser.save();
+        const userRegistrationRes = lodash_1.default.pick(savedNewUser, Object.keys(new user_to_1.UserRegistrationRes()));
         next();
-        res.status(201).send(_id);
+        res.status(201).send(userRegistrationRes);
     }
     catch (error) {
         console.log(error);

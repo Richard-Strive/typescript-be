@@ -26,7 +26,12 @@ const UserSchema = new Schema<User, UserModel>(
       type: String,
       required: true,
     },
-    email: { type: String, required: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      dropDups: true,
+    },
     phoneNumber: {
       type: Number,
       required: true,

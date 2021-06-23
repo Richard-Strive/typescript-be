@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserLoginReq = exports.UserRegistrationReq = void 0;
+exports.UserRegistrationRes = exports.UserRegistrationReq = void 0;
 class UserRegistrationReq {
     constructor() {
         this.password = undefined;
@@ -13,11 +13,12 @@ class UserRegistrationReq {
     }
 }
 exports.UserRegistrationReq = UserRegistrationReq;
-class UserLoginReq {
+class UserRegistrationRes {
     constructor() {
-        this.password = undefined;
+        this.firstName = undefined;
         this.email = undefined;
+        this.locationOfRecidence = undefined;
     }
 }
-exports.UserLoginReq = UserLoginReq;
+exports.UserRegistrationRes = UserRegistrationRes;
 //# sourceMappingURL=user-to.js.map
