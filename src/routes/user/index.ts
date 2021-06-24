@@ -28,7 +28,7 @@ route.post(
 
       //check if the email it's already stored
       const isMatchEmail = await User.findOne({
-        email: req.body.email.toLowerCase(),
+        email: req.body.email,
       });
       if (isMatchEmail) {
         res

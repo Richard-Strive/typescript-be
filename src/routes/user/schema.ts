@@ -31,6 +31,7 @@ const UserSchema = new Schema<User, UserModel>(
       required: true,
       unique: true,
       dropDups: true,
+      lowercase: true,
     },
     phoneNumber: {
       type: Number,
