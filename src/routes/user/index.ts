@@ -1,13 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
-
 import _ from "lodash";
-
 import { validationResult } from "express-validator";
-
 import valideMid from "./user-validation";
-
 import User from "./schema";
-
 import { UserRegistrationReq, UserRegistrationRes } from "./user-to";
 
 const route = express.Router();
@@ -31,11 +26,11 @@ route.post(
         Object.keys(new UserRegistrationReq())
       );
 
-      //add email valid with mongoose method
+      //check if the email it's already stored
       const isMatchEmail = await User.findOne({ email: req.body.email });
       if (isMatchEmail) {
         res
-          .status(500)
+          .status(400)
           .send(
             "Sorry but this email it's already in use. Please choose another one."
           );
@@ -46,14 +41,12 @@ route.post(
         savedNewUser,
         Object.keys(new UserRegistrationRes())
       );
-
-      console.log(userRegistrationReq);
       next();
-
       res.status(201).send(userRegistrationRes);
     } catch (error) {
       console.log(error);
       next(error);
+      res.status(500).send("Generic Server Error");
     }
   }
 );
