@@ -1,5 +1,7 @@
 import { Schema, model, Model } from "mongoose";
 
+// trim:true it's used to get rid of redundant white spaces
+
 interface User {
   name: string;
   surname: string;
@@ -17,18 +19,22 @@ const UserSchema = new Schema<User, UserModel>(
     firstName: {
       type: String,
       required: true,
+      trim: true,
     },
     surname: {
       type: String,
       required: true,
+      trim: true,
     },
     title: {
       type: String,
       required: true,
+      trim: true,
     },
     email: {
       type: String,
       required: true,
+      trim: true,
       unique: true,
       dropDups: true,
       lowercase: true,
@@ -36,14 +42,17 @@ const UserSchema = new Schema<User, UserModel>(
     phoneNumber: {
       type: Number,
       required: true,
+      trim: true,
     },
     locationOfRecidence: {
       type: String,
       required: true,
+      trim: true,
     },
     password: {
       type: String,
       required: true,
+      trim: true,
     },
     cart: { type: Array, required: false },
     favProd: { type: Array, required: false },
