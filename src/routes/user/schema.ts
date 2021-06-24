@@ -42,7 +42,6 @@ const UserSchema = new Schema<User, UserModel>(
     phoneNumber: {
       type: Number,
       required: true,
-      trim: true,
     },
     locationOfRecidence: {
       type: String,
