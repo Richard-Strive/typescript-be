@@ -66,7 +66,11 @@ route.post(
           res.status(200).send(userFound);
           next();
         } else {
-          res.status(400).send("no user found");
+          res
+            .status(400)
+            .send(
+              "no user found with this match or the passward it's incorrect"
+            );
         }
       }
     } catch (error) {

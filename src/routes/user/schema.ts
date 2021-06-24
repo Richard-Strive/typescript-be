@@ -1,4 +1,6 @@
 import { Schema, model, Model } from "mongoose";
+import express from "express";
+import bcrypt from "bcrypt";
 
 // trim:true it's used to get rid of redundant white spaces
 
@@ -72,7 +74,7 @@ UserSchema.static(
       const user = await this.findOne({ email });
 
       if (user) {
-        const isMatch = (await plainPW) == user.password;
+        const isMatch = await bcrypt.compare(plainPW, user.password);
 
         if (isMatch) return user;
         else console.log("Passord incorrect");
@@ -82,5 +84,11 @@ UserSchema.static(
     }
   }
 );
+
+UserSchema.pre("save", async function (next: express.NextFunction) {
+  const user = this;
+  user.password = await bcrypt.hash(user.password, 10);
+  next();
+});
 
 export default model<User, UserModel>("User", UserSchema);
