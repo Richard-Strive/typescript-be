@@ -1,11 +1,49 @@
 import express, { Request, Response, NextFunction } from "express";
-import _ from "lodash";
+import _, { reject } from "lodash";
 import { validationResult } from "express-validator";
 import valideMid from "./user-validation";
 import User from "./schema";
 import { UserRegistrationReq, UserRegistrationRes } from "./user-to";
+import jwt from "jsonwebtoken";
+import { resolve } from "path/posix";
 
 const route = express.Router();
+
+// jwt.sign({
+//   data: 'foobar'
+// }, 'secret', { expiresIn: '1h' });
+
+// jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256' }, function(err, token) {
+//   console.log(token);
+// });
+
+// jwt.verify(token, 'shhhhh', function(err, decoded) {
+//   console.log(decoded.foo) // bar
+// });
+
+const tokenGen = () => {
+  return new Promise((resolve, reject) => {
+    jwt.sign(
+      { foo: "bar" },
+      process.env.SECRET_KEY,
+      { algorithm: "RS256" },
+      function (err, token) {
+        resolve(token);
+      }
+    );
+  });
+};
+
+const otherToken = async () => {
+  try {
+    const thaToken = await tokenGen();
+    console.log("This is tha token", thaToken);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+otherToken();
 
 //Registration
 route.post(
