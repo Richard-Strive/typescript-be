@@ -2,6 +2,11 @@ import { Schema, model, Model } from "mongoose";
 import express from "express";
 import bcrypt from "bcrypt";
 
+// const { Schema, model, Model } = require("mongoose");
+// const mongoose = require("mongoose");
+// const bcrypt = require("bcrypt");
+// const express = require("express");
+
 // trim:true it's used to get rid of redundant white spaces
 
 interface User {
@@ -92,3 +97,5 @@ UserSchema.pre("save", async function (next: express.NextFunction) {
 });
 
 export default model<User, UserModel>("User", UserSchema);
+
+//module.exports=model("User", UserSchema)

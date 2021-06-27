@@ -4,46 +4,21 @@ import { validationResult } from "express-validator";
 import valideMid from "./user-validation";
 import User from "./schema";
 import { UserRegistrationReq, UserRegistrationRes } from "./user-to";
-import jwt from "jsonwebtoken";
-import { resolve } from "path/posix";
+import { genToken, autho } from "./user-auth";
 
 const route = express.Router();
 
-// jwt.sign({
-//   data: 'foobar'
-// }, 'secret', { expiresIn: '1h' });
-
-// jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256' }, function(err, token) {
-//   console.log(token);
-// });
-
-// jwt.verify(token, 'shhhhh', function(err, decoded) {
-//   console.log(decoded.foo) // bar
-// });
-
-const tokenGen = () => {
-  return new Promise((resolve, reject) => {
-    jwt.sign(
-      { foo: "bar" },
-      process.env.SECRET_KEY,
-      { algorithm: "RS256" },
-      function (err, token) {
-        resolve(token);
-      }
-    );
-  });
-};
-
-const otherToken = async () => {
-  try {
-    const thaToken = await tokenGen();
-    console.log("This is tha token", thaToken);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-otherToken();
+/**
+ * 1) TypeScript giving error about: allowing top-level "await" only when the module it's set to esnext or system
+ *  and the target should be es2017 and above
+ *
+ * 2) TypeScript giving error about: setted above, and changed all imports to require
+ *  express it's not no more recognized.
+ *
+ * 3) For those reasons i'm using the jwt methods synch
+ *
+ * 4) Adding  the algorithm opt i receive a strange error: Error: error:0909006C:PEM routines:get_name:no start line
+ */
 
 //Registration
 route.post(
@@ -100,8 +75,13 @@ route.post(
       if (email && password) {
         const userFound = await User.findByCredentials(email, password);
 
+        const newUserFound = userFound.toJSON();
+
         if (userFound) {
-          res.status(200).send(userFound);
+          const { email } = userFound;
+          const token = genToken({ email });
+
+          res.status(200).send(token);
           next();
         } else {
           res
@@ -118,4 +98,21 @@ route.post(
   }
 );
 
+route.get(
+  "/me",
+  autho,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { user } = req;
+      res.status(200).send(user);
+      next();
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+);
+
 export default route;
+
+//
