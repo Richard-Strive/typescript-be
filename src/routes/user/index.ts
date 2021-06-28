@@ -89,7 +89,7 @@ route.post(
       }
     } catch (error) {
       console.log(error);
-      next(error);
+
       res.status(500).send("Generic Server Error");
     }
   }
