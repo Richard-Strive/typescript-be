@@ -56,11 +56,10 @@ route.post(
         savedNewUser,
         Object.keys(new UserRegistrationRes())
       );
-      next();
       res.status(201).send(userRegistrationRes);
     } catch (error) {
       console.log(error);
-      next(error);
+      // next(error);
       res.status(500).send("Generic Server Error");
     }
   }
@@ -74,15 +73,12 @@ route.post(
       const { email, password } = req.body;
       if (email && password) {
         const userFound = await User.findByCredentials(email, password);
-
         const newUserFound = userFound.toJSON();
-
         if (userFound) {
           const { email } = userFound;
           const token = genToken({ email });
 
           res.status(200).send(token);
-          next();
         } else {
           res
             .status(400)
@@ -94,6 +90,7 @@ route.post(
     } catch (error) {
       console.log(error);
       next(error);
+      res.status(500).send("Generic Server Error");
     }
   }
 );
@@ -105,10 +102,10 @@ route.get(
     try {
       const { user } = req;
       res.status(200).send(user);
-      next();
     } catch (error) {
       console.log(error);
-      next(error);
+      res.status(500).send("Generic Server Error");
+      // next(error);
     }
   }
 );
